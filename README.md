@@ -34,7 +34,6 @@ An AI-assisted, full-stack Campaign Management System built for the OutFlo.io Fo
 - React + TypeScript  
 - TailwindCSS + shadcn/ui  
 - Axios for API calls  
-- React Router for navigation
 
 **Backend**  
 - Node.js + Express  
