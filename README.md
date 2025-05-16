@@ -1,5 +1,7 @@
 # OutFlo.io - Campaign Management System 🚀
 
+Deployed Link: https://campaign-management-system.netlify.app/
+
 An AI-assisted, full-stack Campaign Management System built for the OutFlo.io Founding Tech Member internship assignment. This platform allows users to create targeted LinkedIn campaigns, generate personalized outreach messages using AI, and even scrape leads from public sources.
 
 ---
