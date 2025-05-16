@@ -145,7 +145,7 @@ export function Campaigns() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold tracking-tight">Campaigns</h1>
-        <Button>New Campaign</Button>
+        {/* <Button>New Campaign</Button> */}
       </div>
       <Card>
         <CardHeader>
