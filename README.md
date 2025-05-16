@@ -81,6 +81,13 @@ npm install
 npm run dev
 ```
 
+## For importing leads query in the following structure
+```bash
+//#postion #industry #location #site:linkedin.com/in
+
+//Sample query: CEO Technology India site:linkedin.com/in
+```
+
  📬 Contact
 Made by Shreevathsa R
 ---
