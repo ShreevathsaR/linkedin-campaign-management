@@ -9,7 +9,7 @@ const openai = new OpenAI({
   baseURL: "https://api.groq.com/openai/v1",
 });
 
-export const generateMessage = async (req: Request, res: Response): Promise<Response | void> => {
+export const generateMessage = async (req: Request, res: Response): Promise<any> => {
   const { name, job_title, company, location, summary } = req.body;
 
   if (!name || !job_title || !company) {

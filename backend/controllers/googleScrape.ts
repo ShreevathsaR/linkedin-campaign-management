@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import { getJson } from "serpapi";
 import ScrapedProfilesModel from "../models/ScrapedProfilesSchema";
 
-export const scrapeLeads = async (req: Request, res: Response): Promise<Response | void> => {
+export const scrapeLeads = async (req: Request, res: Response): Promise<any> => {
   console.log("Scraping leads...");
 
   const searchQuery = req.query.query as string;

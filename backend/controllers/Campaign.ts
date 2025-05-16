@@ -11,7 +11,7 @@ export const getAllCampaigns = async (req: Request, res: Response) => {
   }
 };
 
-export const getCampaignById = async (req: Request, res: Response)=> {
+export const getCampaignById = async (req: Request, res: Response) : Promise<any> => {
   try {
     const campaign = await CampaignModel.findById(req.params.id);
     if (!campaign || campaign.status === 'deleted') {
@@ -33,7 +33,7 @@ export const createCampaign = async (req: Request, res: Response) => {
   }
 };
 
-export const updateCampaign = async (req: Request, res: Response) => {
+export const updateCampaign = async (req: Request, res: Response) : Promise<any> => {
   try {
     const updated = await CampaignModel.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -47,7 +47,7 @@ export const updateCampaign = async (req: Request, res: Response) => {
   }
 };
 
-export const softDeleteCampaign = async (req: Request, res: Response) => {
+export const softDeleteCampaign = async (req: Request, res: Response) : Promise<any>=> {
   try {
     const deleted = await CampaignModel.findByIdAndUpdate(
       req.params.id,
