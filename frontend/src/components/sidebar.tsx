@@ -36,6 +36,7 @@ export function Sidebar({ currentPage, setCurrentPage }: SidebarProps) {
   return (
     <div className="hidden border-r bg-card md:block md:w-64">
       <div className="flex h-16 items-center border-b px-6">
+        <img src="/vite.png" alt="Logo" className="h-8 w-8" />
         <h1 className="text-lg font-semibold">Campaign Manager</h1>
       </div>
       <nav className="space-y-1 p-4">
