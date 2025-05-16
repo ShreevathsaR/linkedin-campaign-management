@@ -4,7 +4,7 @@ import CampaignModel from '../models/CampaignSchema';
 
 export const getAllCampaigns = async (req: Request, res: Response) => {
   try {
-    const campaigns = await CampaignModel.find({ status: { $ne: 'deleted' } });
+    const campaigns = await CampaignModel.find();
     res.json(campaigns);
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch campaigns' });
