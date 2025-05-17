@@ -18,6 +18,7 @@ import { Input } from "../components/ui/input";
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
+import { ClipLoader } from "react-spinners";
 
 type Lead = {
   _id: string;
@@ -33,28 +34,32 @@ export function ScrapedLeads() {
   const [profiles, setProfiles] = useState<Lead[] | []>([]);
   const [searchQuery, setSearchQuery] = useState("");
 
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     fetchProfiles();
   }, []);
 
   const fetchProfiles = async () => {
+    setIsLoading(true);
     try {
       const response = await api.get("/leads");
       console.log(response.data);
       setProfiles(response.data);
+      setIsLoading(false);
     } catch (error) {
       console.log("Error fetching profiles", error);
+      setIsLoading(false);
     }
   };
 
   const searchForProfiles = async () => {
-
     if (!searchQuery) {
       return alert("Please enter a search query");
     }
 
     try {
-      console.log(searchQuery)
+      console.log(searchQuery);
       const response = await api.post(`leads?query=${searchQuery}`);
       setProfiles(response.data);
     } catch (error) {
@@ -127,9 +132,14 @@ export function ScrapedLeads() {
                 ))}
               </TableBody>
             ) : (
-              <div className="text-l pt-5 text-center w-full">No leads found</div>
+               !isLoading && <div className="text-l pt-5 text-center w-full">
+                No leads found
+              </div>
             )}
           </Table>
+          <div className="py-5 text-l text-center">
+            <ClipLoader loading={isLoading} size={20} />
+          </div>
         </CardContent>
       </Card>
     </div>

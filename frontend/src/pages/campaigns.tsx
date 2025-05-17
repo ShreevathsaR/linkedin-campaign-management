@@ -42,6 +42,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+import { ClipLoader } from "react-spinners";
 
 type Campaign = {
   _id: string;
@@ -59,6 +60,7 @@ export function Campaigns() {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingCampaign, setEditingCampaign] = useState<Campaign | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     getAllCampaigns();
@@ -98,12 +100,15 @@ export function Campaigns() {
   };
 
   const getAllCampaigns = async () => {
+    setIsLoading(true);
     try {
       const response = await api.get("/campaign");
       console.log("Campaigns fetched successfully", response.data);
       setCampaigns(response.data);
+      setIsLoading(false);
     } catch (error) {
       console.log("Error fetching campaigns", error);
+      setIsLoading(false);
     }
   };
 
@@ -167,133 +172,144 @@ export function Campaigns() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {campaigns.map((campaign) => (
-                <TableRow key={campaign._id}>
-                  <TableCell className="font-medium">{campaign.name}</TableCell>
-                  <TableCell>{getStatusBadge(campaign.status)}</TableCell>
-                  <TableCell className="hidden max-w-xs truncate md:table-cell">
-                    {campaign.description}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon">
-                          <MoreHorizontal className="h-4 w-4" />
-                          <span className="sr-only">Open menu</span>
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem
-                          className="flex items-center gap-2"
-                          onClick={() => openEditModal(campaign)}
-                          disabled={campaign.status === "deleted"}
-                        >
-                          <Edit className="h-4 w-4" /> Edit
-                        </DropdownMenuItem>
-                        <Dialog
-                          open={isDialogOpen}
-                          onOpenChange={setIsDialogOpen}
-                        >
-                          <DialogContent>
-                            <DialogHeader>
-                              <DialogTitle>Edit Campaign</DialogTitle>
-                            </DialogHeader>
-                            {editingCampaign && (
-                              <div className="space-y-4">
-                                <Input
-                                  value={editingCampaign.name}
-                                  onChange={(e) =>
-                                    handleEditChange("name", e.target.value)
-                                  }
-                                  placeholder="Campaign Name"
-                                />
-                                <Textarea
-                                  value={editingCampaign.description}
-                                  onChange={(e) =>
-                                    handleEditChange(
-                                      "description",
-                                      e.target.value
-                                    )
-                                  }
-                                  placeholder="Description"
-                                />
-                                <Select
-                                  value={editingCampaign.status}
-                                  onValueChange={(val) =>
-                                    handleEditChange("status", val)
-                                  }
-                                >
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Status" />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    <SelectItem value="active">
-                                      Active
-                                    </SelectItem>
-                                    <SelectItem value="inactive">
-                                      Inactive
-                                    </SelectItem>
-                                    <SelectItem value="deleted">
-                                      Deleted
-                                    </SelectItem>
-                                  </SelectContent>
-                                </Select>
-                                <Textarea
-                                  value={editingCampaign.leads.join(",")}
-                                  onChange={(e) =>
-                                    handleEditChange(
-                                      "leads",
-                                      e.target.value.split(",")
-                                    )
-                                  }
-                                  placeholder="LinkedIn URLs (comma-separated)"
-                                />
-                                <Textarea
-                                  value={editingCampaign.accountIDs.join(",")}
-                                  onChange={(e) =>
-                                    handleEditChange(
-                                      "accountIDs",
-                                      e.target.value.split(",")
-                                    )
-                                  }
-                                  placeholder="Account IDs (comma-separated)"
-                                />
-                                <DialogFooter>
-                                  <Button onClick={submitEdit}>
-                                    Save Changes
-                                  </Button>
-                                </DialogFooter>
-                              </div>
-                            )}
-                          </DialogContent>
-                        </Dialog>
-                        <DropdownMenuItem
-                          className="flex items-center gap-2"
-                          onClick={() => toggleStatus(campaign._id)}
-                          disabled={campaign.status === "deleted"}
-                        >
-                          <Switch
-                            checked={campaign.status === "active"}
-                            className="mr-2"
-                          />
-                          {campaign.status === "active"
-                            ? "Deactivate"
-                            : "Activate"}
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          className="flex items-center gap-2 text-destructive focus:text-destructive"
-                          onClick={() => deleteCampaign(campaign._id)}
-                          disabled={campaign.status === "deleted"}
-                        >
-                          <Trash className="h-4 w-4" /> Delete
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {campaigns.length <= 0 && !isLoading ? (
+                <div className="py-5 text-l text-center">
+                  No campaigns found
+                </div>
+              ) : (
+                campaigns.map((campaign) => (
+                  <TableRow key={campaign._id}>
+                    <TableCell className="font-medium">
+                      {campaign.name}
+                    </TableCell>
+                    <TableCell>{getStatusBadge(campaign.status)}</TableCell>
+                    <TableCell className="hidden max-w-xs truncate md:table-cell">
+                      {campaign.description}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="icon">
+                            <MoreHorizontal className="h-4 w-4" />
+                            <span className="sr-only">Open menu</span>
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem
+                            className="flex items-center gap-2"
+                            onClick={() => openEditModal(campaign)}
+                            disabled={campaign.status === "deleted"}
+                          >
+                            <Edit className="h-4 w-4" /> Edit
+                          </DropdownMenuItem>
+                          <Dialog
+                            open={isDialogOpen}
+                            onOpenChange={setIsDialogOpen}
+                          >
+                            <DialogContent>
+                              <DialogHeader>
+                                <DialogTitle>Edit Campaign</DialogTitle>
+                              </DialogHeader>
+                              {editingCampaign && (
+                                <div className="space-y-4">
+                                  <Input
+                                    value={editingCampaign.name}
+                                    onChange={(e) =>
+                                      handleEditChange("name", e.target.value)
+                                    }
+                                    placeholder="Campaign Name"
+                                  />
+                                  <Textarea
+                                    value={editingCampaign.description}
+                                    onChange={(e) =>
+                                      handleEditChange(
+                                        "description",
+                                        e.target.value
+                                      )
+                                    }
+                                    placeholder="Description"
+                                  />
+                                  <Select
+                                    value={editingCampaign.status}
+                                    onValueChange={(val) =>
+                                      handleEditChange("status", val)
+                                    }
+                                  >
+                                    <SelectTrigger>
+                                      <SelectValue placeholder="Status" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      <SelectItem value="active">
+                                        Active
+                                      </SelectItem>
+                                      <SelectItem value="inactive">
+                                        Inactive
+                                      </SelectItem>
+                                      <SelectItem value="deleted">
+                                        Deleted
+                                      </SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                  <Textarea
+                                    value={editingCampaign.leads.join(",")}
+                                    onChange={(e) =>
+                                      handleEditChange(
+                                        "leads",
+                                        e.target.value.split(",")
+                                      )
+                                    }
+                                    placeholder="LinkedIn URLs (comma-separated)"
+                                  />
+                                  <Textarea
+                                    value={editingCampaign.accountIDs.join(",")}
+                                    onChange={(e) =>
+                                      handleEditChange(
+                                        "accountIDs",
+                                        e.target.value.split(",")
+                                      )
+                                    }
+                                    placeholder="Account IDs (comma-separated)"
+                                  />
+                                  <DialogFooter>
+                                    <Button onClick={submitEdit}>
+                                      Save Changes
+                                    </Button>
+                                  </DialogFooter>
+                                </div>
+                              )}
+                            </DialogContent>
+                          </Dialog>
+                          <DropdownMenuItem
+                            className="flex items-center gap-2"
+                            onClick={() => toggleStatus(campaign._id)}
+                            disabled={campaign.status === "deleted"}
+                          >
+                            <Switch
+                              checked={campaign.status === "active"}
+                              className="mr-2"
+                            />
+                            {campaign.status === "active"
+                              ? "Deactivate"
+                              : "Activate"}
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            className="flex items-center gap-2 text-destructive focus:text-destructive"
+                            onClick={() => deleteCampaign(campaign._id)}
+                            disabled={campaign.status === "deleted"}
+                          >
+                            <Trash className="h-4 w-4" /> Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
             </TableBody>
           </Table>
+              <div className="py-5 text-l text-center">
+                <ClipLoader loading={isLoading} size={20} />
+              </div>
         </CardContent>
       </Card>
     </div>
