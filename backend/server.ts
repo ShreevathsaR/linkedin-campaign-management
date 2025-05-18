@@ -28,6 +28,7 @@ const pingServer = () => {
       console.error("Ping failed:", error.message);
     });
 };
+
 setInterval(pingServer, 300000);
 
 app.use('/api/campaign', campaignRoutes)
