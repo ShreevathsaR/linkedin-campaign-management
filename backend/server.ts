@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import campaignRoutes from './routes/CampaignRoutes'
 import messageGenRoutes from './routes/MessageGenerationRoutes'
 import profilesRoutes from './routes/ScrapedProfilesRoutes'
+import axios from 'axios';
 
 dotenv.config();
 
@@ -20,7 +21,7 @@ app.get('/', (_req, res) => {
 
 const pingServer = () => {
   axios
-    .get(process.env.SERVER_URL)
+    .get(process.env.SERVER_URL as string)
     .then((response) => {
       console.log("Ping successful:", response.status);
     })
