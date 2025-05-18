@@ -17,6 +17,19 @@ app.use(express.json());
 app.get('/', (_req, res) => {
   res.send('API is running 🚀');
 });
+
+const pingServer = () => {
+  axios
+    .get(process.env.SERVER_URL)
+    .then((response) => {
+      console.log("Ping successful:", response.status);
+    })
+    .catch((error) => {
+      console.error("Ping failed:", error.message);
+    });
+};
+setInterval(pingServer, 300000);
+
 app.use('/api/campaign', campaignRoutes)
 app.use('/api/generate-message', messageGenRoutes)
 app.use('/api/leads', profilesRoutes)
