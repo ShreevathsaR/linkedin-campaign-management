@@ -1,8 +1,8 @@
-# OutFlo.io - Campaign Management System 🚀
+# LinkedIn Campaign Management System 🚀
 
 Deployed Link: http://campaign-management.vathsa.site/
 
-An AI-assisted, full-stack Campaign Management System built for the OutFlo.io Founding Tech Member internship assignment. This platform allows users to create targeted LinkedIn campaigns, generate personalized outreach messages using AI, and even scrape leads from public sources.
+An AI-assisted, full-stack Campaign Management allows users to create targeted LinkedIn campaigns, generate personalized outreach messages using AI, and even scrape leads from public sources.
 
 ---
 
