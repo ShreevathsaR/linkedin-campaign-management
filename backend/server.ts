@@ -30,7 +30,7 @@ const pingServer = () => {
     });
 };
 
-setInterval(pingServer, 300000);
+// setInterval(pingServer, 300000); Removed because this cron job will exceed render's free tier limit
 
 app.use('/api/campaign', campaignRoutes)
 app.use('/api/generate-message', messageGenRoutes)
